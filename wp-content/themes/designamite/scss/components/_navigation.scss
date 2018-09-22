@@ -1,0 +1,155 @@
+.site-header {
+
+	padding: 0px 40px;
+	height: 115px;
+
+	.main-navigation {
+
+		position: absolute;
+    	top: 80px;
+    	right: 25px;
+    	max-width: 652px;
+
+    	@media(max-width: 1024px) {
+
+    		display: none;
+
+    	}
+
+
+		ul {
+
+			padding-left: 0px;
+			list-style-type: none;
+
+			li {
+
+				display: inline-block;
+				position: relative;
+
+				&:not(:last-child) {
+	    			border-right: 1px solid $dark-green;
+	    		}	
+
+				a {
+
+					text-decoration: none;
+				    position: relative;
+				    padding: 0px 14px 0px 10px;
+	    			color: $dark-green;
+	    			font-weight: bold;
+
+				}
+			}
+		}
+	}
+
+	.c-hamburger{
+	  display: none;
+
+	  @media( max-width: 1024px ){ 
+
+	    display: inline-block;
+		    position: relative;
+		    overflow: hidden;
+		    margin: 0;
+		    padding: 0;
+		    width: 42px;
+		    height: 42px;
+		    font-size: 0;
+		    text-indent: -9999px;
+		    appearance: none;
+		    box-shadow: none;
+		    border-radius: none;
+		    border: none;
+		    cursor: pointer;
+		    transition: background 0.3s;
+
+	  }
+
+	}
+
+	  .c-hamburger:focus {
+	      outline: none;
+	  }
+
+	  .c-hamburger span {
+	      display: block;
+	    position: absolute;
+	      left: 0px;
+	      right: 0px;
+	      height: 5px;
+	      background: #0B3459;
+	  }
+
+	  .c-hamburger span::before,
+	  .c-hamburger span::after {
+	      position: absolute;
+	      display: block;
+	      left: 0;
+	      width: 100%;
+	      height: 5px;
+	      background-color: #0B3459;
+	      content: "";
+	  }
+
+	  .c-hamburger span::before {
+	      top: -10px;
+	  }
+
+	  .c-hamburger span::after {
+	    bottom: -10px;
+	  }
+
+	  .c-hamburger--htx {
+	      background-color: transparent;
+	  }
+
+	  .c-hamburger--htx span::before {
+	      transition-property: top, transform;
+	  }
+
+	  .c-hamburger--htx span::after {
+	      transition-property: bottom, transform;
+	  }
+
+	  /* active state, i.e. menu open */
+	  .c-hamburger--htx.is-active {
+	      background-color: transparent;
+	  }
+
+	  .c-hamburger--htx.is-active span {
+	      background: none;
+	  }
+
+	  .c-hamburger--htx.is-active span::before {
+	      top: 0;
+	      transform: rotate(45deg);
+	  }
+
+	  .c-hamburger--htx.is-active span::after {
+	      bottom: 0;
+	      transform: rotate(-45deg);
+	  }
+
+	  .hamburger-wrapper{
+
+	    position:absolute;
+	    right: 20px;
+	    top: 50%;
+	    transform: translateY(-50%);
+
+	    @media (min-width: 1025px) {
+	      display: none;
+	    }
+
+	    p {
+	        color: #0B3459;
+	        font-size: 17px;
+	        font-weight: bold;
+	        margin-top: -3px;
+	    }
+
+	  }
+}
+

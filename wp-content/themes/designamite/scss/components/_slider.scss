@@ -1,0 +1,32 @@
+.slider-wrapper {
+
+	position: relative;
+
+	.owl-carousel {
+
+		padding-bottom: 40px;
+
+		.owl-stage {
+
+			height: 500px;
+
+		}
+
+		.owl-stage-outer {
+
+		    position: relative;
+		    overflow: visible;
+
+		}
+
+
+		.item .item-image {
+
+			height: 500px;
+			border-bottom: 4px solid $dark-green;
+
+		}
+
+	}
+
+}

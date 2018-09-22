@@ -1,0 +1,58 @@
+body {
+
+	h1, .h1 {
+
+		font-size: $text-h1-size;
+		font-weight: bold;
+		margin-bottom: 24px;
+
+	}
+
+	h2, .h2 {
+
+		font-size: $text-h2-size;
+		font-weight: 600;
+		margin-bottom: 24px;
+
+	}
+
+	h3, .h3 {
+
+		font-size: $text-h3-size;
+		font-weight: 600;
+		margin-bottom: 20px;
+
+	}
+
+	h4, .h4 {
+
+		font-size: $text-h4-size;
+	    font-weight: 600;
+	    margin-bottom: 12px;
+		
+	}
+
+	h5, .h5 {
+
+		font-size: $text-h5-size;
+		font-weight: 600;
+		margin-bottom: 10px;
+		
+	}
+
+	#content{
+
+		ul {
+			padding-left: 18px;
+		}
+
+		li {
+
+			line-height: 21px;
+    		padding: 14px 0px
+
+		}
+
+	}
+
+}

@@ -1,0 +1,39 @@
+/*
+Base - generic site wide styles i.e. inputs
+*/
+@import "base/variables";
+@import "base/base";
+@import "base/type";
+
+/*
+Plugins - add plugins css here
+*/
+@import "plugins/normalize";
+@import "plugins/owl.carousel.min";
+@import "plugins/grid";
+@import "plugins/font-awesome";
+
+/*
+Mixins
+*/
+@import "mixins/clearfix";
+@import "mixins/aspect-ratio-containers";
+
+/*
+Layouts -- Add a file per Wordpress template to avoid files over 1000 lines.
+*/
+@import "layouts/page-home";
+
+/*
+Components - reusable components/modules across the site
+*/
+@import "components/header";
+@import "components/navigation";
+@import "components/menu";
+@import "components/slider";
+@import "components/testimonials";
+@import "components/services";
+@import "components/footer";
+@import "components/news-posts";
+@import "components/about";
+

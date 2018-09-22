@@ -1,0 +1,17 @@
+.post {
+
+	padding: 20px 0px;
+
+	&:not(:last-child){
+
+		border-bottom: 2px solid $dark-green;
+
+	}
+
+	h3 {
+
+    font-size: 18px;
+		margin-bottom: 12px;
+
+	}
+}

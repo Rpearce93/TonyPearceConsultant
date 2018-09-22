@@ -1,0 +1,44 @@
+.testimonial-block {
+
+	position: relative;
+	margin: 40px 0px;
+	padding: 40px 0px;
+	background: $dark-green;
+	background-attachment: fixed;
+	height: 220px;
+	color: #fff;
+
+	.testimonial-block-inner {
+
+		position: relative;
+		padding: 0px 20px;
+
+		.quote-marks {
+			
+			img {
+				
+				position: absolute;
+    			left: -140px;
+
+			}
+		}
+
+		.testimonial-textarea {
+			padding-bottom: 16px;
+		}
+
+		.testimonial-client {
+			font-size: 22px;
+    		font-weight: bold;
+		}
+
+		.testimonial-company {
+			border-bottom: 4px solid #fff;
+			font-size: 18px;
+		    padding-bottom: 16px;
+		    margin-bottom: 16px;
+		}
+
+	}
+
+}

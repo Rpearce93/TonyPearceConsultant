@@ -1,0 +1,96 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+img,
+video,
+iframe {
+    max-width: 100%;
+    border: 0;
+    height: auto;
+    user-select: none;
+}
+
+body {
+    margin: 0 auto;
+    background-color: $body-background-color;
+    font-family: $font-body-base;
+    font-size: $text-body-size;
+    color: $black;
+}
+
+strong {
+    
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+#content {
+    max-width: 1280px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+h1,h2,h3,h4,h5,h6 {
+
+    font-family: $font-header-base;
+    color: $dark-green;
+
+}
+
+p {
+    line-height: 20px
+}
+
+a {
+    color: $dark-green;
+    font-family: $font-header-base;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 0 20px;
+    max-width: $container-width-md;
+}
+
+.wrapper {
+
+    text-align:left;
+    margin: 0 auto;
+    padding: 0 20px;
+    max-width: $container-width-lrg;
+
+}
+
+.text-center {
+    text-align: center;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.visuallyhidden {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+}

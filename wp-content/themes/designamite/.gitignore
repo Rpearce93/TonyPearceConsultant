@@ -1,0 +1,6 @@
+*.DS_Store
+*.webm
+*.mp4
+*.cfg
+wp-config.php
+node_modules
