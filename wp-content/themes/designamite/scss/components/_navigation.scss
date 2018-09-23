@@ -1,14 +1,14 @@
 .site-header {
 
 	padding: 0px 40px;
-	height: 115px;
 
 	.main-navigation {
 
 		position: absolute;
-    	top: 80px;
-    	right: 25px;
-    	max-width: 652px;
+		top: 50%;
+		right: 25px;
+		max-width: 652px;
+		transform: translateY(-50%);
 
     	@media(max-width: 1024px) {
 
@@ -26,10 +26,6 @@
 
 				display: inline-block;
 				position: relative;
-
-				&:not(:last-child) {
-	    			border-right: 1px solid $dark-green;
-	    		}	
 
 				a {
 

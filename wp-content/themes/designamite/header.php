@@ -57,9 +57,9 @@ SITE BY DESIGNAMITE.CO.UK
 			<button class="c-hamburger c-hamburger--htx"><span></span></button>
 		</div>
 
-		<div class="contact-information">
+<!-- 		<div class="contact-information">
 			<h5><span>Call Me On</span>:<br /> 00000 000000</h5>
-		</div>
+		</div> -->
 
 		<nav id="site-navigation" class="main-navigation">
 			<?php

@@ -1,4 +1,4 @@
-*,
+f*,
 *::before,
 *::after {
     margin: 0;
@@ -34,7 +34,6 @@ strong {
 }
 
 #content {
-    max-width: 1280px;
     margin: 0 auto;
     text-align: left;
 }
@@ -44,6 +43,16 @@ h1,h2,h3,h4,h5,h6 {
     font-family: $font-header-base;
     color: $dark-green;
 
+}
+
+.hidden-block {
+    max-height: 0px;
+    transition: all 1s;
+    overflow: hidden;
+
+    &.open {
+        max-height: 1000px;
+    }
 }
 
 p {

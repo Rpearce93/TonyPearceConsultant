@@ -1,6 +1,6 @@
 <?php
 class FrmStyle {
-    public $number = false;	// Unique ID number of the current instance.
+	public $number = false; // Unique ID number of the current instance.
 	public $id = 0; // the id of the post
 
 	/**
@@ -15,7 +15,7 @@ class FrmStyle {
 
         $max_slug_value = 2147483647;
         $min_slug_value = 37; // we want to have at least 2 characters in the slug
-        $key = base_convert( rand($min_slug_value, $max_slug_value), 10, 36 );
+		$key = base_convert( rand( $min_slug_value, $max_slug_value ), 10, 36 );
 
         $style = array(
             'post_type'     => FrmStylesController::$post_type,
@@ -31,7 +31,7 @@ class FrmStyle {
     }
 
 	public function save( $settings ) {
-		return FrmAppHelper::save_settings( $settings, 'frm_styles' );
+		return FrmDb::save_settings( $settings, 'frm_styles' );
     }
 
 	public function duplicate( $id ) {
@@ -41,7 +41,7 @@ class FrmStyle {
     public function update( $id = 'default' ) {
  		$all_instances = $this->get_all();
 
- 		if ( empty($id) ) {
+ 		if ( empty( $id ) ) {
  		     $new_style = (array) $this->get_new();
  		     $all_instances[] = $new_style;
  		}
@@ -49,15 +49,15 @@ class FrmStyle {
         $action_ids = array();
 
  		foreach ( $all_instances as $number => $new_instance ) {
- 			$new_instance = stripslashes_deep( (array) $new_instance);
+ 			$new_instance = stripslashes_deep( (array) $new_instance );
  			$this->id = $new_instance['ID'];
- 			if ( $id != $this->id || ! $_POST || ! isset($_POST['frm_style_setting']) ) {
+ 			if ( $id != $this->id || ! $_POST || ! isset( $_POST['frm_style_setting'] ) ) {
 				$all_instances[ $number ] = $new_instance;
 
- 			    if ( $new_instance['menu_order'] && $_POST && empty($_POST['prev_menu_order']) && isset($_POST['frm_style_setting']['menu_order']) ) {
+				if ( $new_instance['menu_order'] && $_POST && empty( $_POST['prev_menu_order'] ) && isset( $_POST['frm_style_setting']['menu_order'] ) ) {
  			        // this style was set to default, so remove default setting on previous default style
  			        $new_instance['menu_order'] = 0;
- 			        $action_ids[] = $this->save($new_instance);
+					$action_ids[] = $this->save( $new_instance );
  			    }
 
  			    // don't continue if not saving this style
@@ -70,7 +70,7 @@ class FrmStyle {
             $new_instance['post_status']  = 'publish';
 			$new_instance['menu_order']  = isset( $_POST['frm_style_setting']['menu_order'] ) ? absint( $_POST['frm_style_setting']['menu_order'] ) : 0;
 
-            if ( empty($id) ) {
+			if ( empty( $id ) ) {
                 $new_instance['post_name'] = $new_instance['post_title'];
             }
 
@@ -81,8 +81,7 @@ class FrmStyle {
 					$new_instance['post_content'][ $setting ] = $default;
 				}
 
-				if ( strpos( $setting, 'color' ) !== false || in_array( $setting, array( 'error_bg', 'error_border', 'error_text' ) ) ) {
-                    //if is a color
+				if ( $this->is_color( $setting ) ) {
 					$new_instance['post_content'][ $setting ] = str_replace( '#', '', $new_instance['post_content'][ $setting ] );
 				} else if ( in_array( $setting, array( 'submit_style', 'important_style', 'auto_width' ) ) && ! isset( $new_instance['post_content'][ $setting ] ) ) {
 					$new_instance['post_content'][ $setting ] = 0;
@@ -93,7 +92,7 @@ class FrmStyle {
 
 			$all_instances[ $number ] = $new_instance;
 
-            $action_ids[] = $this->save($new_instance);
+			$action_ids[] = $this->save( $new_instance );
 
  		}
 
@@ -102,14 +101,31 @@ class FrmStyle {
  		return $action_ids;
  	}
 
+	/**
+	 * @since 3.01.01
+	 */
+	private function is_color( $setting ) {
+		$extra_colors = array( 'error_bg', 'error_border', 'error_text' );
+		return strpos( $setting, 'color' ) !== false || in_array( $setting, $extra_colors );
+	}
+
+	/**
+	 * @since 3.01.01
+	 */
+	public function get_color_settings() {
+		$defaults = $this->get_defaults();
+		$settings = array_keys( $defaults );
+		return array_filter( $settings, array( $this, 'is_color' ) );
+	}
+
     /**
      * Create static css file
      */
 	public function save_settings() {
 		$filename = FrmAppHelper::plugin_path() . '/css/custom_theme.css.php';
-		update_option( 'frm_last_style_update', date('njGi') );
+		update_option( 'frm_last_style_update', date( 'njGi' ) );
 
-        if ( ! is_file($filename) ) {
+		if ( ! is_file( $filename ) ) {
             return;
         }
 
@@ -117,12 +133,16 @@ class FrmStyle {
 
 		$css = $this->get_css_content( $filename );
 
-		$create_file = new FrmCreateFile( array( 'folder_name' => 'formidable/css', 'file_name' => 'formidablepro.css' ) );
+		$create_file = new FrmCreateFile(
+			array(
+				'file_name'     => FrmStylesController::get_file_name(),
+				'new_file_path' => FrmAppHelper::plugin_path() . '/css',
+			)
+		);
 		$create_file->create_file( $css );
 
-        update_option('frmpro_css', $css);
-
-        set_transient('frmpro_css', $css);
+		update_option( 'frmpro_css', $css, 'no' );
+		set_transient( 'frmpro_css', $css );
 	}
 
 	private function get_css_content( $filename ) {
@@ -148,13 +168,13 @@ class FrmStyle {
 			'order'       => 'ASC',
 		);
 
-		FrmAppHelper::delete_cache_and_transient( serialize( $default_post_atts ), 'frm_styles' );
-		FrmAppHelper::cache_delete_group( 'frm_styles' );
-		FrmAppHelper::delete_cache_and_transient( 'frmpro_css' );
+		FrmDb::delete_cache_and_transient( serialize( $default_post_atts ), 'frm_styles' );
+		FrmDb::cache_delete_group( 'frm_styles' );
+		FrmDb::delete_cache_and_transient( 'frmpro_css' );
 	}
 
 	public function destroy( $id ) {
-        return wp_delete_post($id);
+		return wp_delete_post( $id );
     }
 
     public function get_one() {
@@ -168,19 +188,19 @@ class FrmStyle {
             return $style;
         }
 
-        $style = get_post($this->id);
+		$style = get_post( $this->id );
 
         if ( ! $style ) {
             return $style;
         }
 
-        $style->post_content = FrmAppHelper::maybe_json_decode($style->post_content);
+		$style->post_content = FrmAppHelper::maybe_json_decode( $style->post_content );
 
         $default_values = $this->get_defaults();
 
-        // fill default values
-        $style->post_content = $this->override_defaults($style->post_content);
-        $style->post_content = wp_parse_args( $style->post_content, $default_values);
+		// fill default values
+		$style->post_content = $this->override_defaults( $style->post_content );
+		$style->post_content = wp_parse_args( $style->post_content, $default_values );
 
         return $style;
     }
@@ -194,22 +214,22 @@ class FrmStyle {
 			'order'       => $order,
         );
 
-        $temp_styles = FrmAppHelper::check_cache(serialize($post_atts), 'frm_styles', $post_atts, 'get_posts');
+		$temp_styles = FrmDb::check_cache( serialize( $post_atts ), 'frm_styles', $post_atts, 'get_posts' );
 
-        if ( empty($temp_styles) ) {
+		if ( empty( $temp_styles ) ) {
             global $wpdb;
             // make sure there wasn't a conflict with the query
 			$query = $wpdb->prepare( 'SELECT * FROM ' . $wpdb->posts . ' WHERE post_type=%s AND post_status=%s ORDER BY post_title ASC LIMIT 99', FrmStylesController::$post_type, 'publish' );
-            $temp_styles = FrmAppHelper::check_cache('frm_backup_style_check', 'frm_styles', $query, 'get_results');
+			$temp_styles = FrmDb::check_cache( 'frm_backup_style_check', 'frm_styles', $query, 'get_results' );
 
-            if ( empty($temp_styles) ) {
+			if ( empty( $temp_styles ) ) {
                 // create a new style if there are none
          		$new = $this->get_new();
 				$new->post_title = __( 'Formidable Style', 'formidable' );
 				$new->post_name = $new->post_title;
          		$new->menu_order = 1;
-         		$new = $this->save( (array) $new);
-         		$this->update('default');
+				$new = $this->save( (array) $new );
+				$this->update( 'default' );
 
                 $post_atts['include'] = $new;
 
@@ -233,17 +253,17 @@ class FrmStyle {
                 }
             }
 
-            $style->post_content = FrmAppHelper::maybe_json_decode($style->post_content);
+			$style->post_content = FrmAppHelper::maybe_json_decode( $style->post_content );
 
-            // fill default values
-            $style->post_content = $this->override_defaults($style->post_content);
-            $style->post_content = wp_parse_args( $style->post_content, $default_values);
+			// fill default values
+			$style->post_content = $this->override_defaults( $style->post_content );
+			$style->post_content = wp_parse_args( $style->post_content, $default_values );
 
 			$styles[ $style->ID ] = $style;
         }
 
         if ( ! $default_style ) {
-            $default_style = reset($styles);
+			$default_style = reset( $styles );
 			$styles[ $default_style->ID ]->menu_order = 1;
         }
 
@@ -251,7 +271,7 @@ class FrmStyle {
     }
 
 	public function get_default_style( $styles = null ) {
-        if ( ! isset($styles) ) {
+		if ( ! isset( $styles ) ) {
 			$styles = $this->get_all( 'menu_order', 'DESC', 1 );
         }
 
@@ -263,24 +283,24 @@ class FrmStyle {
     }
 
 	public function override_defaults( $settings ) {
-	    if ( ! is_array($settings) ) {
+		if ( ! is_array( $settings ) ) {
 	        return $settings;
 	    }
 
-	    $settings['line_height'] = ( ! isset($settings['field_height']) || $settings['field_height'] == '' || $settings['field_height'] == 'auto') ? 'normal' : $settings['field_height'];
+		$settings['line_height'] = ( ! isset( $settings['field_height'] ) || $settings['field_height'] == '' || $settings['field_height'] == 'auto' ) ? 'normal' : $settings['field_height'];
 
-	    if ( ! isset($settings['form_desc_size']) && isset($settings['description_font_size']) ) {
+		if ( ! isset( $settings['form_desc_size'] ) && isset( $settings['description_font_size'] ) ) {
 	        $settings['form_desc_size'] = $settings['description_font_size'];
 	        $settings['form_desc_color'] = $settings['description_color'];
 	        $settings['title_color'] = $settings['label_color'];
 	    }
 
-	    if ( ! isset($settings['section_color']) && isset($settings['label_color']) ) {
+		if ( ! isset( $settings['section_color'] ) && isset( $settings['label_color'] ) ) {
 	        $settings['section_color'] = $settings['label_color'];
 	        $settings['section_border_color'] = $settings['border_color'];
 	    }
 
-	    if ( ! isset($settings['submit_hover_bg_color']) && isset($settings['submit_bg_color']) ) {
+		if ( ! isset( $settings['submit_hover_bg_color'] ) && isset( $settings['submit_bg_color'] ) ) {
 	        $settings['submit_hover_bg_color'] = $settings['submit_bg_color'];
 	        $settings['submit_hover_color'] = $settings['submit_text_color'];
 	        $settings['submit_hover_border_color'] = $settings['submit_border_color'];
@@ -290,15 +310,15 @@ class FrmStyle {
             $settings['submit_active_border_color'] = $settings['submit_border_color'];
 	    }
 
-	    return $settings;
+	    return apply_filters( 'frm_override_default_styles', $settings );
 	}
 
 	public function get_defaults() {
-        return array(
+		$defaults = array(
             'theme_css'         => 'ui-lightness',
             'theme_name'        => 'UI Lightness',
 
-			'center_form'		=> '',
+			'center_form'       => '',
             'form_width'        => '100%',
             'form_align'        => 'left',
             'direction'         => is_rtl() ? 'rtl' : 'ltr',
@@ -335,8 +355,8 @@ class FrmStyle {
 			'description_margin' => '0',
 
             'field_font_size'   => '14px',
-            'field_height' 		=> '32px',
-            'line_height'		=> 'normal',
+            'field_height'      => '32px',
+            'line_height'       => 'normal',
             'field_width'       => '100%',
             'auto_width'        => false,
             'field_pad'         => '6px 10px',
@@ -427,7 +447,8 @@ class FrmStyle {
 			'progress_size'         => '30px',
 
             'custom_css'        => '',
-        );
+		);
+		return apply_filters( 'frm_default_style_settings', $defaults );
     }
 
 	public function get_field_name( $field_name, $post_field = 'post_content' ) {
@@ -436,14 +457,17 @@ class FrmStyle {
 
 	public static function get_bold_options() {
 		return array(
-			100 => 100, 200 => 200, 300 => 300,
+			100 => 100,
+			200 => 200,
+			300 => 300,
 			'normal' => __( 'normal', 'formidable' ),
-			500 => 500, 600 => 600,
+			500 => 500,
+			600 => 600,
 			'bold' => __( 'bold', 'formidable' ),
-			800 => 800, 900 => 900,
+			800 => 800,
+			900 => 900,
 		);
 	}
-
 
 	/**
 	 * Don't let imbalanced font families ruin the whole stylesheet

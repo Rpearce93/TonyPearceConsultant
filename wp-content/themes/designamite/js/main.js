@@ -2,17 +2,17 @@ require('./plugins');
 
 var $ = jQuery;
 
-window.designamite = {
+window.main = {
 
   init: function()
   {
 
-    designamite.global.init();
-    designamite.slider();
+    main.slider();
+    main.readMore();
 
   },
 
-    slider: function() {
+  	slider: function() {
 		$('#owl-carousel-slider').owlCarousel({
 	        responsive:{
 	            0:{
@@ -26,8 +26,26 @@ window.designamite = {
 	    });
 	},
 
-  global: require('./methods/global'),
+  	readMore: function() {
+
+  		var c = false;
+
+	    $('.read-more').click(function(){
+
+	    	if( c === false) {
+	    		$(this).parent().find('.hidden-block').addClass('open');
+	    		c = true;
+	    	} else {
+	    		$(this).parent().find('.hidden-block').removeClass('open');
+	    		c = false;
+	    	}
+
+	    });
+
+  	},
+
+  	global: require('./methods/global'),
 
 }
 
-$(document).ready(designamite.init);
+$(document).ready(main.init);

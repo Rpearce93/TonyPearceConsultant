@@ -27,11 +27,11 @@ class FrmDbDeprecated {
 	/**
 	 * @deprecated 2.03.05
 	 */
-	public function upgrade( $old_db_version = false ) {
+	public function upgrade() {
 		_deprecated_function( __FUNCTION__, '2.03.05', 'FrmDb::upgrade( $old_db_version )' );
 
-		$db = new FrmDb();
-		$db->upgrade( $old_db_version );
+		$db = new FrmMigrate();
+		$db->upgrade();
 	}
 
 	/**
@@ -40,8 +40,8 @@ class FrmDbDeprecated {
 	public function collation() {
 		_deprecated_function( __FUNCTION__, '2.03.05', 'FrmDb::collation()' );
 
-		$db = new FrmDb();
-		$db->collation();
+		$db = new FrmMigrate();
+		return $db->collation();
 	}
 
 	/**
@@ -50,7 +50,7 @@ class FrmDbDeprecated {
 	public function uninstall() {
 		_deprecated_function( __FUNCTION__, '2.03.05', 'FrmDb::uninstall()' );
 
-		$db = new FrmDb();
+		$db = new FrmMigrate();
 		$db->uninstall();
 	}
 
